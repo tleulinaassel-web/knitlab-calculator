@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KnitLab School — калькуляторы</title>
+<style>
+:root{--plum:#8b5bb5;--plum-dark:#6f438f;--gold:#d6b64e;--rose:#d9a0a5;--ink:#382b35;--muted:#817784;--line:#e6dce9;--cream:#fff9f8}
+*{box-sizing:border-box}
+body{margin:0;padding:28px 18px 42px;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:radial-gradient(ellipse at 0 0,rgba(229,189,40,.13),transparent 28%),radial-gradient(ellipse at 100% 0,rgba(139,91,181,.13),transparent 32%),var(--cream)}
+main{max-width:980px;margin:0 auto}
+.brand{display:inline-block;margin-bottom:12px;padding-bottom:7px;border-bottom:2px solid var(--gold);font-size:12px;font-weight:800;letter-spacing:.2em}
+.hero{padding:18px 4px 24px}
+h1{margin:0 0 10px;font-size:clamp(32px,5vw,48px);line-height:1.08}
+.subtitle{margin:0;color:var(--muted);font-size:16px;line-height:1.6;max-width:680px}
+.rule{display:flex;gap:7px;margin:22px 0 28px}.rule span{height:4px;flex:1;border-radius:99px;background:#e6dced}.rule span:first-child{background:var(--plum)}.rule span:nth-child(3){background:var(--gold)}
+.section-title{margin:0 0 14px;font-size:22px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{display:flex;flex-direction:column;min-height:270px;padding:24px;border:1px solid var(--line);border-radius:24px;background:rgba(255,255,255,.9);box-shadow:0 10px 30px rgba(75,48,76,.045)}
+.icon{width:76px;height:76px;display:grid;place-items:center;border-radius:50%;margin-bottom:20px;background:var(--gold);border:1px solid rgba(135,105,31,.2)}
+.card:nth-child(2) .icon{background:var(--rose)}
+.icon svg{width:53px;height:53px;display:block}
+.tag{margin-bottom:8px;color:var(--plum-dark);font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+h2{margin:0 0 10px;font-size:23px}
+.card p{margin:0 0 22px;color:var(--muted);line-height:1.55}
+.button{display:inline-flex;align-items:center;justify-content:center;margin-top:auto;padding:13px 18px;border-radius:13px;background:var(--plum);color:white;text-decoration:none;font-weight:750;transition:background .15s ease,transform .15s ease}
+.button:hover{background:var(--plum-dark);transform:translateY(-1px)}
+.note{margin-top:24px;padding:16px 18px;border-radius:16px;background:rgba(255,255,255,.65);border:1px solid var(--line);color:var(--muted);font-size:13px;line-height:1.6}
+footer{margin-top:28px;text-align:center;color:var(--muted);font-size:12px;letter-spacing:.04em}
+@media(max-width:650px){body{padding:18px 13px 30px}.cards{grid-template-columns:1fr}.card{min-height:240px;padding:21px}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+<div class="brand">KNITLAB SCHOOL</div>
+<h1>Инструменты для вязания</h1>
+<p class="subtitle">Практичные калькуляторы для расчётов на однофонтурных вязальных машинах. Выбери инструмент и переходи к расчётам.</p>
+<div class="rule" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+</header>
+<section aria-labelledby="tools-title">
+<h2 class="section-title" id="tools-title">Твои калькуляторы</h2>
+<div class="cards">
+<article class="card">
+<div class="icon" aria-hidden="true">
+<svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<rect x="10" y="5" width="44" height="54" rx="7"/><rect x="17" y="12" width="30" height="10" rx="2"/>
+<rect x="17" y="29" width="7" height="6" rx="1"/><rect x="29" y="29" width="7" height="6" rx="1"/><rect x="41" y="29" width="7" height="6" rx="1"/>
+<rect x="17" y="39" width="7" height="6" rx="1"/><rect x="29" y="39" width="7" height="6" rx="1"/><rect x="41" y="39" width="7" height="6" rx="1"/>
+<rect x="17" y="49" width="7" height="5" rx="1"/><rect x="29" y="49" width="7" height="5" rx="1"/><rect x="41" y="49" width="7" height="5" rx="1"/>
+</svg>
+</div>
+<div class="tag">Инструмент 01</div>
+<h2>Калькулятор плотности</h2>
+<p>Рассчитай количество петель и рядов в 1 и 10 см по своему связанному образцу.</p>
+<a class="button" href="density.html">Открыть калькулятор →</a>
+</article>
+<article class="card">
+<div class="icon" aria-hidden="true">
+<svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<rect x="10" y="5" width="44" height="54" rx="7"/><rect x="17" y="12" width="30" height="10" rx="2"/>
+<rect x="17" y="29" width="7" height="6" rx="1"/><rect x="29" y="29" width="7" height="6" rx="1"/><rect x="41" y="29" width="7" height="6" rx="1"/>
+<rect x="17" y="39" width="7" height="6" rx="1"/><rect x="29" y="39" width="7" height="6" rx="1"/><rect x="41" y="39" width="7" height="6" rx="1"/>
+<rect x="17" y="49" width="7" height="5" rx="1"/><rect x="29" y="49" width="7" height="5" rx="1"/><rect x="41" y="49" width="7" height="5" rx="1"/>
+</svg>
+</div>
+<div class="tag">Инструмент 02</div>
+<h2>Калькулятор реглана</h2>
+<p>Пошаговые расчёты изделия снизу вверх с V-образной горловиной для однофонтурной машины.</p>
+<a class="button" href="reglan.html">Открыть калькулятор →</a>
+</article>
+</div>
+<div class="note">Калькуляторы открываются отдельно. Расчёты выполняются на основе введённых тобой измерений.</div>
+</section>
+<footer>KNITLAB SCHOOL · инструменты для вязания</footer>
+</main>
+</body>
+</html>
