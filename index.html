@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KnitLab Calculator</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f0f7;
+  color: #382b3d;
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+}
+h1 { color: #8b55b5; text-align: center; }
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+}
+label { display: block; margin-top: 12px; }
+input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: 1px solid #d9c8e2;
+  border-radius: 10px;
+  font-size: 18px;
+}
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 12px;
+  background: #8b55b5;
+  color: white;
+  font-size: 18px;
+}
+#result {
+  font-size: 18px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+</style>
+</head>
+<body>
+<h1>🧶 KnitLab Calculator</h1>
+<div class="card">
+  <h2>Плотность вязания</h2>
+  <label>Количество петель в образце</label>
+  <input id="stitches" type="number" min="1" step="any" placeholder="Например, 30">
+  <label>Ширина образца (см)</label>
+  <input id="width" type="number" min="0.1" step="any" placeholder="Например, 12">
+  <label>Количество рядов в образце</label>
+  <input id="rows" type="number" min="1" step="any" placeholder="Например, 40">
+  <label>Высота образца (см)</label>
+  <input id="height" type="number" min="0.1" step="any" placeholder="Например, 14">
+  <button onclick="calculate()">Рассчитать</button>
+</div>
+<div class="card">
+  <h2>Результат</h2>
+  <div id="result">Введи данные образца и нажми «Рассчитать».</div>
+</div>
+<script>
+function calculate() {
+  const s = Number(document.getElementById('stitches').value);
+  const w = Number(document.getElementById('width').value);
+  const r = Number(document.getElementById('rows').value);
+  const h = Number(document.getElementById('height').value);
+  const result = document.getElementById('result');
+
+  if (!s || !w || !r || !h || s < 0 || w <= 0 || r < 0 || h <= 0) {
+    result.textContent = 'Заполни все четыре поля корректными числами.';
+    return;
+  }
+
+  result.textContent =
+    'Петель в 1 см: ' + (s / w).toFixed(2) +
+    '\nПетель в 10 см: ' + (s / w * 10).toFixed(2) +
+    '\nРядов в 1 см: ' + (r / h).toFixed(2) +
+    '\nРядов в 10 см: ' + (r / h * 10).toFixed(2);
+}
+</script>
+</body>
+</html>
