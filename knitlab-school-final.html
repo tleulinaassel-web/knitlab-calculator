@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KnitLab School — калькулятор реглана</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#382b35;background:#fff9f8;--plum:#a94f9b;--gold:#e5bd28;--taupe:#d8b9b0;--ink:#382b35;--muted:#756773;--line:#eadde7;--cream:#fff9f8}
+*{box-sizing:border-box}body{margin:0;padding:20px 14px 44px;background:radial-gradient(ellipse at -8% -8%,#c16ab4 0 115px,transparent 117px),radial-gradient(ellipse at 108% 108%,#e0c2ba 0 180px,transparent 182px),var(--cream);min-height:100vh}.wrap{max-width:820px;margin:auto}
+header{padding:18px 0 22px}.brand{display:inline-block;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#8b3782;font-weight:850;border-bottom:3px solid var(--gold);padding-bottom:7px}
+h1{font-size:clamp(28px,6vw,42px);line-height:1.1;margin:12px 0;color:#3e2b3d}.sub{color:var(--muted);line-height:1.5;margin:0}
+.progress{display:flex;gap:7px;margin:14px 0 22px}.dot{height:5px;flex:1;border-radius:9px;background:#eadfe8}.dot.active{background:var(--plum)}
+.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-top:3px solid var(--taupe);border-radius:20px;padding:20px;margin:12px 0;box-shadow:0 8px 24px #663b5a0c}
+h2{font-size:21px;margin:0 0 7px;color:#57384f}.hint{color:var(--muted);font-size:14px;line-height:1.45;margin:0 0 17px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{min-width:0}.field label{display:block;font-size:14px;font-weight:650;margin-bottom:6px}
+input{width:100%;min-width:0;padding:12px;border:1px solid #ddcbdc;border-radius:11px;font:inherit;background:#fff;color:var(--ink)}input:focus{outline:2px solid #c66ab4;outline-offset:1px}
+.unit{font-weight:400;color:#827386}.result{background:linear-gradient(135deg,#fbf0f8,#fff8e5);border:1px solid #f0dfed;border-radius:14px;padding:14px;margin-top:16px;line-height:1.6}.result strong{color:#7d3675}.result ul{margin:7px 0 0;padding-left:20px}
+.actions{display:flex;gap:10px;justify-content:space-between;margin-top:18px;flex-wrap:wrap}button{border:0;border-radius:12px;padding:12px 17px;font:inherit;font-weight:700;cursor:pointer}.primary{background:var(--plum);color:white;box-shadow:0 4px 10px #a94f9b25}.primary:hover{background:#923d86}.secondary{background:#f1e5ef;color:#593c55}button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hidden{display:none!important}.note{font-size:13px;color:#7b6d7b;line-height:1.5;margin-top:12px}.error{color:#a32828;font-size:14px;margin-top:10px}.stepname{font-size:12px;color:#9a438c;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+@media(max-width:520px){body{padding:14px 10px 32px}.card{padding:16px}.grid{grid-template-columns:1fr}.actions button{flex:1}}
+</style>
+</head>
+<body><main class="wrap">
+<header><div class="brand">KNITLAB SCHOOL</div><h1>Калькулятор реглана</h1><p class="sub">Пошаговые расчёты изделия снизу вверх с V-образной горловиной для однофонтурной машины.</p></header>
+<div class="progress" aria-label="Прогресс"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+
+<section class="card stage" data-stage="0">
+<div class="stepname">Этап 1 из 5</div><h2>Плотность и параметры изделия</h2><p class="hint">Внесите плотность образца и размеры. Для плотности укажите количество петель/рядов и соответствующий размер образца.</p>
+<div class="grid">
+<div class="field"><label for="gs">Петель в образце</label><input id="gs" type="number" min="1" step="any" value="30"></div>
+<div class="field"><label for="gw">Ширина образца, см</label><input id="gw" type="number" min="0.1" step="any" value="10"></div>
+<div class="field"><label for="gr">Рядов в образце</label><input id="gr" type="number" min="1" step="any" value="40"></div>
+<div class="field"><label for="gh">Высота образца, см</label><input id="gh" type="number" min="0.1" step="any" value="10"></div>
+<div class="field"><label for="width">Ширина изделия, см</label><input id="width" type="number" min="0.1" step="any" placeholder="Например, 50"></div>
+<div class="field"><label for="bodyh">Высота до подрезов, см</label><input id="bodyh" type="number" min="0.1" step="any" placeholder="Например, 40"></div>
+<div class="field"><label for="under">Размер подреза, см</label><input id="under" type="number" min="0" step="any" placeholder="Размер одного подреза"></div>
+</div><div class="result" id="initialResult" aria-live="polite">Заполните размеры, чтобы увидеть расчёт.</div>
+<p class="note">Набор петель округляется вверх до ближайшего чётного числа. Высота до подрезов: дробную часть убираем; если целая часть нечётная, прибавляем 1, если чётная — оставляем. Подрезы не округляются: размер каждого подреза переводится в петли по плотности как есть; калькулятор показывает расчёт для одного подреза и суммарно для двух.</p>
+<div class="actions"><span></span><button class="primary" type="button" data-next>Далее: спинка →</button></div><div class="error" id="err0"></div>
+</section>
+
+<section class="card stage hidden" data-stage="1">
+<div class="stepname">Этап 2 из 5</div><h2>Фактический реглан спинки</h2><p class="hint">Заполните после того, как свяжете реглан спинки. Вводятся реальные значения с машины.</p>
+<div class="grid">
+<div class="field"><label for="backRows">Высота реглана, рядов</label><input id="backRows" type="number" min="1" step="1" placeholder="Например, 100"></div>
+<div class="field"><label for="backDec">Всего убавлено по двум линиям, петель</label><input id="backDec" type="number" min="0" step="1" placeholder="Например, 100"></div>
+<div class="field"><label for="backRemain">Осталось петель на спинке</label><input id="backRemain" type="number" min="0" step="1" placeholder="Например, 30"></div>
+</div><div class="result" id="backResult" aria-live="polite">Введите фактические данные спинки.</div>
+<div class="actions"><button class="secondary" type="button" data-prev>← Назад</button><button class="primary" type="button" data-next>Далее: перед →</button></div><div class="error" id="err1"></div>
+</section>
+
+<section class="card stage hidden" data-stage="2">
+<div class="stepname">Этап 3 из 5</div><h2>Реглан переда и V-образная горловина</h2><p class="hint">Перед рассчитывается по введённым данным спинки. Убавки горловины показаны отдельно от убавок реглана.</p>
+<div class="result" id="frontResult" aria-live="polite">Сначала заполните данные спинки.</div>
+<h3 style="margin:18px 0 6px;font-size:18px">Расчёт V-образной горловины</h3><p class="hint">Этот расчёт отдельный: убавки V-выреза не входят в убавки реглана переда.</p>
+<div class="result" id="vResult" aria-live="polite">После ввода данных спинки здесь автоматически появятся петли на каждой стороне, резерв для шва, количество шагов и интервал убавок V-выреза.</div>
+<p class="note">Количество петель на стороне переда рассчитывается автоматически: остаток переда делится пополам. Для нечётного количества на стороне оставляем 3 петли для шва, для чётного — 4. Остаток на убавки делится на 2, поскольку за один шаг убавляются 2 петли. Интервал показывается как высота реглана переда, делённая на число шагов.</p>
+<div class="actions"><button class="secondary" type="button" data-prev>← Назад</button><button class="primary" type="button" data-next>Далее: рукав →</button></div><div class="error" id="err2"></div>
+</section>
+
+<section class="card stage hidden" data-stage="3">
+<div class="stepname">Этап 4 из 5</div><h2>Рукав: широкая часть и шаг прибавок</h2><p class="hint">Сначала рассчитаем самую широкую часть рукава, затем количество прибавок и средний интервал между ними. Только после этого перейдём к номеру ряда начала ростка.</p>
+<div class="grid">
+<div class="field"><label for="cuff">Ширина манжеты, см</label><input id="cuff" type="number" min="0.1" step="any" placeholder="Например, 18"></div>
+<div class="field"><label for="sleeveLen">Длина рукава до подреза, см</label><input id="sleeveLen" type="number" min="0.1" step="any" placeholder="Например, 45"></div>
+</div><div class="result" id="sleeveResult" aria-live="polite">Введите параметры рукава и проверьте расчёт широкой части и интервалов прибавок.</div>
+<p class="note">Формула широкой части по вашей методике: подрезы с двух сторон + половина убавок спинки + половина убавок переда (без V-выреза) + половина остатка спинки. Если расчёт прибавок на сторону даёт дробное число, дробная часть отбрасывается; интервал считается по целому числу прибавок.</p>
+<div class="actions"><button class="secondary" type="button" data-prev>← Назад</button><button class="primary" type="button" data-next>Далее: начало ростка →</button></div><div class="error" id="err3"></div>
+</section>
+
+<section class="card stage hidden" data-stage="4">
+<div class="stepname">Этап 5 из 5</div><h2>Начало формирования ростка</h2><p class="hint">Калькулятор показывает только номер ряда — без инструкций по вязанию.</p>
+<div class="result" id="sproutResult" aria-live="polite">Сначала рассчитайте высоту реглана переда.</div>
+<div class="actions"><button class="secondary" type="button" data-prev>← Назад</button><button class="secondary" type="button" id="reset">Начать заново</button></div>
+</section>
+<footer class="note">Подрезы не округляются. Набор петель изделия округляется вверх до ближайшего чётного числа. Дробная часть числа прибавок рукава отбрасывается; интервал считается по целому числу прибавок.</footer>
+</main>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+let stage=0;
+const dots=[...document.querySelectorAll('.dot')], stages=[...document.querySelectorAll('.stage')];
+const val=id=>{const n=Number($(id).value);return $(id).value.trim()!==''&&Number.isFinite(n)?n:null};
+const fmt=n=>Number.isInteger(n)?String(n):String(Number(n.toFixed(4))).replace('.',',');
+const show=(id,s)=>$(id).innerHTML=s;
+const valid=(ids)=>ids.every(id=>val(id)!==null);
+function initial(){
+if(!valid(['gs','gw','gr','gh','width','bodyh','under'])||val('gs')<=0||val('gw')<=0||val('gr')<=0||val('gh')<=0||val('width')<=0||val('bodyh')<=0||val('under')<0){show('initialResult','Заполните все поля положительными числами; размер подреза может быть 0.');return null}
+const stitchGauge=val('gs')/val('gw'), rowGauge=val('gr')/val('gh');
+const castRaw=stitchGauge*val('width'), rowsRaw=rowGauge*val('bodyh'), underRaw=stitchGauge*val('under');
+const cast=Math.ceil(castRaw/2)*2, rows=Math.floor(rowsRaw)%2===0?Math.floor(rowsRaw):Math.floor(rowsRaw)+1, underEach=underRaw, under=underRaw*2;
+show('initialResult',`Плотность: <strong>${fmt(stitchGauge)} петель/см</strong> и <strong>${fmt(rowGauge)} рядов/см</strong>.<ul><li>Расчётный набор: <strong>${fmt(cast)} петель</strong> (исходный расчёт ${fmt(castRaw)}, округлено вверх до чётного)</li><li>До подрезов: <strong>${fmt(rows)} рядов</strong> (исходный расчёт ${fmt(rowsRaw)}; дробная часть убрана, нечётное целое увеличено до чётного)</li><li>На один подрез: <strong>${fmt(underEach)} петель</strong> (без округления)</li><li>На два подреза всего: <strong>${fmt(under)} петель</strong></li></ul>`);
+return {stitchGauge,rowGauge,cast,rows,under,underEach}
+}
+function back(){
+if(!valid(['backRows','backDec','backRemain'])||val('backRows')<=0||val('backDec')<0||val('backRemain')<0||![val('backRows'),val('backDec'),val('backRemain')].every(Number.isInteger)){show('backResult','Введите целые неотрицательные значения; высота должна быть больше нуля.');return null}
+const b={rows:val('backRows'),dec:val('backDec'),remain:val('backRemain')};
+show('backResult',`Данные спинки сохранены: <strong>${b.rows} рядов</strong>, убавлено <strong>${b.dec} петель</strong>, осталось <strong>${b.remain} петель</strong>.`);
+return b
+}
+function front(){
+const b=back();if(!b){show('frontResult','Сначала корректно заполните данные спинки.');return null}
+const f={rows:b.rows-4,dec:b.dec-4,remain:b.remain+4};
+if(f.rows<=0||f.dec<0){show('frontResult','При этих данных автоматический расчёт переда даёт невозможное значение. Проверьте данные спинки.');return null}
+show('frontResult',`Высота реглана переда: <strong>${f.rows} рядов</strong>.<br>Убавлено по двум регланным линиям переда: <strong>${f.dec} петель</strong> (на 4 меньше, чем по спинке).<br>Осталось до формирования V-выреза: <strong>${f.remain} петель</strong> (на 4 больше, чем по спинке).<br>Последняя убавка переда: <strong>${f.rows-4} ряд</strong>, если последние 4 ряда идут без убавок.`);
+return f
+}
+function vneck(){
+const f=front();
+if(!f){show('vResult','Сначала корректно заполните данные спинки.');return}
+const n=f.remain/2;
+if(!Number.isInteger(n)){show('vResult',`Остаток переда — ${f.remain} петель. Его нельзя поровну разделить на две стороны (${fmt(n)} петли на сторону). Проверьте исходные данные.`);return}
+const reserve=n%2?3:4, decrease=n-reserve;
+if(decrease<0||decrease%2!==0){show('vResult',`На одну сторону приходится ${n} петель. После резерва ${reserve} петель для шва остаётся ${decrease} петель, и это число не делится на 2. Проверьте исходные данные.`);return}
+const steps=decrease/2, interval=steps?f.rows/steps:null;
+show('vResult',`<strong>Расчёт V-образной горловины — на одну сторону:</strong><ul><li>Остаток переда: ${f.remain} петель.</li><li>Петель на каждую сторону: ${f.remain} ÷ 2 = <strong>${n}</strong>.</li><li>Оставить для трикотажного шва: <strong>${reserve} петли</strong>.</li><li>Петель для убавок: ${n} − ${reserve} = <strong>${decrease}</strong>.</li><li>Шагов убавок (по 2 петли за шаг): ${decrease} ÷ 2 = <strong>${steps}</strong>.</li><li>Высота реглана переда: <strong>${f.rows} рядов</strong>.</li><li>Интервал: ${f.rows} ÷ ${steps} = <strong>${interval===null?'не рассчитывается':fmt(interval)+' ряда'}</strong>.</li></ul>`);
+}
+function sleeve(){
+const i=initial(),b=back(),f=front();
+if(!i||!b||!f||!valid(['cuff','sleeveLen'])||val('cuff')<=0||val('sleeveLen')<=0){show('sleeveResult','Заполните параметры рукава и предыдущие этапы.');return}
+const cuff=Math.ceil((i.stitchGauge*val('cuff'))/2)*2, rowsRaw=i.rowGauge*val('sleeveLen'), rowsFloor=Math.floor(rowsRaw), rows=rowsFloor%2===0?rowsFloor:rowsFloor+1;
+const broad=i.under+b.dec/2+f.dec/2+b.remain/2, diff=broad-cuff, eachRaw=diff/2, each=Math.floor(eachRaw);
+if(broad<=0||diff<0){show('sleeveResult','Расчётная широкая часть не может быть меньше наборного ряда манжеты. Проверьте исходные данные.');return}
+const interval=each>0?rows/each:null;
+show('sleeveResult',`Набор манжеты: <strong>${fmt(cuff)} петель</strong>.<br>Высота до подреза: <strong>${fmt(rows)} рядов</strong> (расчёт ${fmt(rowsRaw)}; дробная часть убрана, затем нечётное целое увеличивается на 1).<br>Широкая часть: <strong>${fmt(broad)} петель</strong>.<br>Разница: <strong>${fmt(diff)} петель</strong>; расчёт прибавок на сторону: <strong>${fmt(eachRaw)}</strong>; после удаления дробной части: <strong>${fmt(each)} прибавок на сторону</strong>.<br>Средний интервал прибавок: <strong>${interval===null?'прибавки не требуются':fmt(interval)+' ряда'}</strong>.`);
+}
+function sprout(){
+const f=front(); if(!f){show('sproutResult','Сначала заполните данные спинки.');return}
+const total=val('backRemain')/2;
+if(!Number.isFinite(total)||total<0){show('sproutResult','Проверьте остаток петель на спинке.');return}
+const third=total/3;
+const startRow=f.rows-2;
+show('sproutResult',`<strong>Начало ростка: ${startRow}-й ряд.</strong><br><br><strong>Распределение ${fmt(total)} петель на 3 части:</strong><ul><li>Правая часть — ${fmt(third)} п.</li><li>Центр — ${fmt(third)} п.</li><li>Левая часть — ${fmt(third)} п.</li></ul>`);
+}
+function update(){
+const i=initial();back();front();vneck();if(val('cuff')!==null||val('sleeveLen')!==null)sleeve();sprout()
+}
+function goto(n){stage=n;stages.forEach((s,i)=>s.classList.toggle('hidden',i!==n));dots.forEach((d,i)=>d.classList.toggle('active',i<=n));window.scrollTo({top:0,behavior:'smooth'});update()}
+document.querySelectorAll('[data-next]').forEach(btn=>btn.addEventListener('click',()=>{const err=$('err'+stage);err.textContent='';if(stage===0&&!initial()){err.textContent='Проверьте исходные данные.';return}if(stage===1&&!back()){err.textContent='Проверьте данные спинки.';return}if(stage===2&&!front()){err.textContent='Проверьте данные реглана переда.';return}if(stage===3&&(!valid(['cuff','sleeveLen'])||val('cuff')<=0||val('sleeveLen')<=0)){err.textContent='Введите ширину манжеты и длину рукава.';return}goto(Math.min(4,stage+1))}));
+document.querySelectorAll('[data-prev]').forEach(btn=>btn.addEventListener('click',()=>goto(Math.max(0,stage-1))));
+['gs','gw','gr','gh','width','bodyh','under','backRows','backDec','backRemain','cuff','sleeveLen'].forEach(id=>$(id).addEventListener('input',update));
+$('reset').addEventListener('click',()=>{document.querySelectorAll('input').forEach(el=>el.value='');$('gs').value=30;$('gw').value=10;$('gr').value=40;$('gh').value=10;goto(0)});
+update();
+})();
+</script></body></html>
