@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KnitLab School — калькулятор плотности</title>
+<style>
+:root {
+  --plum: #98508e;
+  --plum-dark: #704568;
+  --gold: #d9b52f;
+  --rose: #c184b9;
+  --beige: #d9bdb4;
+  --ink: #403541;
+  --muted: #786d78;
+  --paper: #fffdfc;
+  --line: #e8d9e4;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 28px 16px 40px;
+  font-family: Arial, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(193,132,185,.18) 0 90px, transparent 91px),
+    radial-gradient(circle at 100% 100%, rgba(217,189,180,.25) 0 130px, transparent 131px),
+    #fffaf9;
+}
+main { max-width: 760px; margin: 0 auto; }
+.brand {
+  color: var(--plum-dark);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  margin-bottom: 10px;
+}
+h1 { font-size: clamp(28px, 5vw, 38px); line-height: 1.15; margin: 0; color: var(--ink); }
+.subtitle { color: var(--muted); margin: 12px 0 24px; line-height: 1.6; }
+.progress { display: flex; gap: 8px; margin: 0 0 22px; }
+.progress span { height: 4px; flex: 1; border-radius: 9px; background: #eadfe9; }
+.progress span:first-child { background: var(--plum); }
+.card {
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: clamp(18px, 4vw, 28px);
+  margin-bottom: 16px;
+  box-shadow: 0 8px 28px rgba(92,61,83,.05);
+}
+.kicker { color: var(--plum-dark); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+h2 { margin: 8px 0 8px; font-size: 22px; }
+.intro { color: var(--muted); line-height: 1.55; font-size: 14px; margin: 0 0 18px; }
+label { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px; }
+input {
+  display: block; width: 100%; min-height: 48px; padding: 12px 14px;
+  border: 1px solid #d9c8d7; border-radius: 12px; background: #fff;
+  color: var(--ink); font: inherit; font-size: 16px;
+}
+input:focus { outline: 3px solid rgba(152,80,142,.18); border-color: var(--plum); }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+button {
+  width: 100%; min-height: 50px; padding: 13px 18px; margin-top: 22px;
+  border: 0; border-radius: 13px; background: var(--plum-dark); color: white;
+  font: inherit; font-weight: 700; font-size: 16px; cursor: pointer;
+}
+button:hover { background: #5f3958; }
+#result {
+  white-space: pre-line; line-height: 1.9; font-size: 16px;
+  background: #fbf3fa; border: 1px solid #ecddeb; border-radius: 15px;
+  padding: 16px; min-height: 70px;
+}
+footer { color: var(--muted); font-size: 12px; line-height: 1.5; text-align: center; padding: 8px 12px; }
+@media (max-width: 520px) {
+  body { padding: 22px 12px 28px; }
+  .fields { grid-template-columns: 1fr; }
+  .card { border-radius: 18px; }
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">KNITLAB SCHOOL</div>
+  <h1>Калькулятор плотности</h1>
+  <p class="subtitle">Рассчитай плотность вязания по своему образцу — быстро и удобно.</p>
+  <div class="progress" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+  <section class="card">
+    <div class="kicker">Инструмент 01</div>
+    <h2>Плотность вязания</h2>
+    <p class="intro">Введи количество петель и рядов в образце, а также его ширину и высоту в сантиметрах.</p>
+    <div class="fields">
+      <div>
+        <label for="stitches">Количество петель в образце</label>
+        <input id="stitches" type="number" min="1" step="any" placeholder="Например, 30">
+      </div>
+      <div>
+        <label for="width">Ширина образца, см</label>
+        <input id="width" type="number" min="0.1" step="any" placeholder="Например, 12">
+      </div>
+      <div>
+        <label for="rows">Количество рядов в образце</label>
+        <input id="rows" type="number" min="1" step="any" placeholder="Например, 40">
+      </div>
+      <div>
+        <label for="height">Высота образца, см</label>
+        <input id="height" type="number" min="0.1" step="any" placeholder="Например, 14">
+      </div>
+    </div>
+    <button type="button" id="calculateBtn">Рассчитать плотность</button>
+  </section>
+  <section class="card" aria-live="polite">
+    <div class="kicker">Результат</div>
+    <h2>Твоя плотность</h2>
+    <div id="result">Введи данные образца и нажми «Рассчитать плотность».</div>
+  </section>
+  <footer>KNITLAB SCHOOL · Инструменты для машинного вязания</footer>
+</main>
+<script>
+function calculate() {
+  const s = Number(document.getElementById('stitches').value);
+  const w = Number(document.getElementById('width').value);
+  const r = Number(document.getElementById('rows').value);
+  const h = Number(document.getElementById('height').value);
+  const result = document.getElementById('result');
+  if (!s || !w || !r || !h || s < 0 || w <= 0 || r < 0 || h <= 0) {
+    result.textContent = 'Заполни все четыре поля корректными числами.';
+    return;
+  }
+  result.textContent =
+    'Петель в 1 см: ' + (s / w).toFixed(2) +
+    '\nПетель в 10 см: ' + (s / w * 10).toFixed(2) +
+    '\nРядов в 1 см: ' + (r / h).toFixed(2) +
+    '\nРядов в 10 см: ' + (r / h * 10).toFixed(2);
+}
+document.getElementById('calculateBtn').addEventListener('click', calculate);
+</script>
+</body>
+</html>
